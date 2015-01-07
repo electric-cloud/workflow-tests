@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transitionTest>
+	<transition>$[/javascript myWorkflow["foo"]=="true"]</transition>
+	<stateType>subprocedure</stateType>
+	<test>
+		<name>testTaken</name>
+		<property>
+			<name>/myWorkflow/foo</name>
+			<value>true</value>
+		</property>
+		<subprocedureScript>
+			exit 1;
+		</subprocedureScript>
+		<finalState>transitionTaken</finalState>
+	</test>
+	<test>
+		<name>testNotTakenWithProperty</name>
+		<property>
+			<name>/myWorkflow/foo</name>
+			<value>notTrue</value>
+		</property>
+		<finalState>transitionNotTaken</finalState>
+	</test>
+
+	<test>
+		<name>testNotTakenNoProperty</name>
+		<finalState>transitionNotTaken</finalState>
+	</test>
+</transitionTest>
+

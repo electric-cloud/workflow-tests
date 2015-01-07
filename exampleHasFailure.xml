@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transitionTest>
+	<transition>
+	$[/javascript
+
+var variants = myWorkflow["propArray"];
+var r = /\d+/g;
+var m = r.exec(variants);
+     setProperty("/myWorkflow/mBeforeNull", m);
+try{
+   while(m!=null) {
+      var folder = myWorkflow[m[0]];
+      var folderProp = getProperty("/myWorkflow/"+m[0]);
+      setProperty("/myWorkflow/folderPropVal", folderProp["propVal"]);
+      setProperty("/myWorkflow/mAfterNull", m[0]);
+
+      setProperty("/myWorkflow/folder", folder);
+      setProperty("/myWorkflow/folderval",folder["propVal"]);
+      if(folder &amp;&amp; folder["propVal"] == "true") {
+         throw "failure";
+      }
+      m=r.exec(variants);
+   }
+"0"
+}
+catch (e) {
+"1"
+}
+]	
+		</transition>
+	<stateType>noAction</stateType>
+	<test>
+		<name>testTaken</name>
+		<property>
+			<name>/myWorkflow/propArray</name>
+			<value>[1,2]</value>
+		</property>
+		<property>
+			<name>/myWorkflow/1/propVal</name>
+			<value>true</value>
+		</property>
+		<property>
+			<name>/myWorkflow/2/propVal</name>
+			<value>true</value>
+		</property>
+		<finalState>transitionTaken</finalState>
+	</test>
+	<test>
+		<name>testNotTakenWithProperty</name>
+		<property>
+			<name>/myWorkflow/foo</name>
+			<value>notTrue</value>
+		</property>
+		<finalState>transitionNotTaken</finalState>
+	</test>
+
+	<test>
+		<name>testNotTakenNoProperty</name>
+		<finalState>transitionNotTaken</finalState>
+	</test>
+</transitionTest>
+
